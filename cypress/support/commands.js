@@ -24,8 +24,28 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('customRequest', (method, endpoint, body, headers, statusCode, content) => {
-    const url = `${Cypress.config('baseUrl')}${endpoint}`;
+Cypress.Commands.add('Login', (username, password) => {
+  // Faz a chamada à API para autenticar o usuário
+  return cy.request({
+    method: 'POST',
+    url: 'https://test-api.k6.io/auth/token/login/',
+    body: {
+      username: username,
+      password: password,
+    },
+  }).then((response) => {
+    expect(response.status).to.equal(200);
+    
+    // Retorna o token para que ele possa ser usado no teste
+     const token = response.body.access;
+     Cypress.env('authToken', token);
+    
+  });
+});
+
+
+Cypress.Commands.add('getCustomRequest', (method, url, body = null, headers = null, statusCode, content = null) => {
+    // const url = `${Cypress.config('baseUrl')}${endpoint}`;
 
     cy.request({
         method,
@@ -40,3 +60,7 @@ Cypress.Commands.add('customRequest', (method, endpoint, body, headers, statusCo
         }
     });
 });
+
+
+
+  

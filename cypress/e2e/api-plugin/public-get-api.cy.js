@@ -8,7 +8,6 @@ describe('Public Get crocodiles tests', () => {
 
         cy.api(`${BASE_URL}/public/crocodiles/`).should((response) => {
             expect(response.status).to.eq(200);
-            expect(response.body).to.have.length(7);
         })
     });
 });

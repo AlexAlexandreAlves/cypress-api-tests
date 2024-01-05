@@ -1,12 +1,12 @@
-import { loginAndSetToken } from '../../support/login-and-set-token.js';
-import { getAccessToken } from '../../support/store-token.js';
+
+import data from '../../fixtures/crocodile-data.json'
 
 const BASE_URL = Cypress.env('BASE_URL')
 
 beforeEach(() => {
-    // Efetua login antes de cada teste e armazena o token
-    loginAndSetToken('usuarioteste02', '1234hh', BASE_URL);
+    cy.Login('usuarioteste02', '1234hh');
 });
+
 
 describe('Authentication test', () => {
 
@@ -32,11 +32,12 @@ describe('Create crocodile test', () => {
 
     it('Create my crocodiles test', () => {
 
-        const token = getAccessToken();
-        const data = {
-            name: 'Godzilla',
-            sex: 'M',
-            date_of_birth: '1975-01-01',
+        const token = Cypress.env('authToken');
+
+        const crocodile = {
+            name: data.crocodileData.name,
+            sex: data.crocodileData.sex,
+            date_of_birth: data.crocodileData.date_of_birth,
         }
 
         cy.request({
@@ -45,12 +46,12 @@ describe('Create crocodile test', () => {
                 Authorization: `Bearer ${token}`
             },
             url: `${BASE_URL}/my/crocodiles/`,
-            body: data
+            body: crocodile
         }).then((response) => {
             expect(response.status).to.eq(201);
             expect(response.body.name).to.eq('Godzilla');
             expect(response.body.sex).to.eq('M');
-            expect(response.body.date_of_birth).to.eq('1975-01-01');
+            expect(response.body.date_of_birth).to.eq('1985-01-01');
         })
     });
 

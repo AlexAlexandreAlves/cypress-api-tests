@@ -1,18 +1,17 @@
-import { loginAndSetToken } from '../../support/login-and-set-token.js';
-import { getAccessToken } from '../../support/store-token.js';
 
 const BASE_URL = Cypress.env('BASE_URL')
 
 
 beforeEach(() => {
-    loginAndSetToken("usuarioteste02", "1234hh", BASE_URL);
+    cy.Login('usuarioteste02', '1234hh');
 });
+
 
 describe('Get private crocodile tests', () => {
 
     it('Get my crocodile test', () => {
 
-        const token = getAccessToken();
+        const token = Cypress.env('authToken');
 
         cy.api({
             method: 'GET',
