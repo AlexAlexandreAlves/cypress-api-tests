@@ -12,6 +12,7 @@ describe('Get private crocodile tests', () => {
 
         const token = Cypress.env('authToken');
 
+        // Default method 
         cy.request({
             method: 'GET',
             headers: {
@@ -21,16 +22,14 @@ describe('Get private crocodile tests', () => {
         }).then((response) => {
 
             const data = response.body[0];
-
             expect(response.status).to.eq(200);
-            cy.log(response.body[0])
-            expect(data).to.deep.equal({
+            expect(data).to.equal({
 
-                id: 12919385,
-                name: 'Godzilla',
+                id: 1,
+                name: 'Bert',
                 sex: 'M',
-                date_of_birth: '1975-01-01',
-                age: 49
+                date_of_birth: '2010-06-27',
+                age: 14
             });
         })
     });
